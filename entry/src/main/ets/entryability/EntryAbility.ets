@@ -1,15 +1,19 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-
+import { DEBUG, INFO, ERROR , FATAL, WARN} from '../common/utils/logutils/index'
 import {setup, init} from "@kuiklybase/knoi"
+import {init_all_service_provider} from '../common/utils/bootstrap/bootstrap'
 
 const DOMAIN = 0x0000;
-
+const tag = 'EntryAbility'
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-
+    DEBUG(tag,'Start to init JNOI');
+    setup('libkn.so', true)
     init();
+    DEBUG(tag,'Start to register service provider')
+    init_all_service_provider();
 
     try {
       this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);

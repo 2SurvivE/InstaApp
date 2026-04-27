@@ -1,20 +1,21 @@
+import { DEBUG, INFO, ERROR , FATAL, WARN} from '../common/utils/logutils/index'
+
+import * as provider from '../ts-api/provider'
+
+const tag = 'EntryPage'
+
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  @State res: string = 'compute a + b'
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
+    Column() {
+      Text(this.res)
         .onClick(() => {
-          this.message = 'Welcome';
+          DEBUG(tag,"Text is clicked")
+          this.res = provider.getCalcService().add(10,30).toString();
         })
     }
     .height('100%')
