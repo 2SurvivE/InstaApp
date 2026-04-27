@@ -13,6 +13,42 @@ const tag = 'EntryAbility'
 
 export default class EntryAbility extends UIAbility {
 
+  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    DEBUG(tag, 'EntryAbility.onCreate(), start to init app');
+  }
+
+  onDestroy(): void {
+    DEBUG(tag, 'Ability onDestroy');
+  }
+
+  onWindowStageCreate(windowStage: window.WindowStage): void {
+    DEBUG(tag, 'Ability onWindowStageCreate');
+    this.initFullScreenLayout(windowStage)
+    windowStage.loadContent('pages/entry/Index', (err: BusinessError): void => {
+      if (err.code) {
+        ERROR(tag, `Failed to load the content. Code: ${err.code}, message: ${err.message}`)
+        return
+      }
+      INFO(tag, 'Succeeded in loading the content.')
+      this.startAppInitAsync();
+    })
+  }
+
+  onWindowStageDestroy(): void {
+    // Main window is destroyed, release UI related resources
+    DEBUG(tag, 'Ability onWindowStageDestroy');
+  }
+
+  onForeground(): void {
+    // Ability has brought to foreground
+    DEBUG(tag, 'Ability onForeground');
+  }
+
+  onBackground(): void {
+    // Ability has back to background
+    DEBUG(tag, 'Ability onBackground');
+  }
+
   private async initFullScreenLayout(windowStage: window.WindowStage) {
     try {
       DEBUG(tag, "Start to set full screen mode")
@@ -88,41 +124,5 @@ export default class EntryAbility extends UIAbility {
       AppInitState.failed(`Error, ${JSON.stringify(e)}`)
       EmitterUtil.post<boolean>(AppEvents.APP_INIT, false)
     }
-  }
-
-  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    DEBUG(tag, 'EntryAbility.onCreate(), start to init app');
-  }
-
-  onDestroy(): void {
-    DEBUG(tag, 'Ability onDestroy');
-  }
-
-  onWindowStageCreate(windowStage: window.WindowStage): void {
-    DEBUG(tag, 'Ability onWindowStageCreate');
-    this.initFullScreenLayout(windowStage)
-    windowStage.loadContent('pages/entry/Index', (err: BusinessError): void => {
-      if (err.code) {
-        ERROR(tag, `Failed to load the content. Code: ${err.code}, message: ${err.message}`)
-        return
-      }
-      INFO(tag, 'Succeeded in loading the content.')
-      this.startAppInitAsync();
-    })
-  }
-
-  onWindowStageDestroy(): void {
-    // Main window is destroyed, release UI related resources
-    DEBUG(tag, 'Ability onWindowStageDestroy');
-  }
-
-  onForeground(): void {
-    // Ability has brought to foreground
-    DEBUG(tag, 'Ability onForeground');
-  }
-
-  onBackground(): void {
-    // Ability has back to background
-    DEBUG(tag, 'Ability onBackground');
   }
 }
