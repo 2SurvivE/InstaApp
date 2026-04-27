@@ -10,24 +10,33 @@ const tag: string = 'EntryPage'
 @Component
 struct Index {
   private pageStack: NavPathStack = new NavPathStack()
-
   @State private appReady: boolean = false
 
-  aboutToAppear(): void {
-    DEBUG(tag, `Success to show PAGE:${tag}`)
+  private unsubscribeAppInit(): void {
+    EmitterUtil.unSubscribe(AppEvents.APP_INIT)
+  }
+
+  private subscribeAppInit(): void {
     DEBUG(tag, `Subscribe the event ${AppEvents.APP_INIT}`)
 
     EmitterUtil.onSubscribe<boolean>(
       AppEvents.APP_INIT,
       (isSuccess: boolean): void => {
+        this.unsubscribeAppInit()
+
         if (isSuccess) {
           DEBUG(tag, 'App init Success')
           this.appReady = true
-        } else {
-          ERROR(tag, 'App init Failed')
+          return
         }
+
+        ERROR(tag, 'App init Failed')
       }
     )
+  }
+
+  aboutToAppear(): void {
+    DEBUG(tag, `Success to show PAGE:${tag}`)
 
     if (AppInitState.status === AppInitStatus.SUCCESS) {
       DEBUG(tag, 'App already init success before page subscribe')
@@ -37,11 +46,14 @@ struct Index {
 
     if (AppInitState.status === AppInitStatus.FAILED) {
       ERROR(tag, `App already init failed, error=${AppInitState.errorMessage}`)
+      return
     }
+
+    this.subscribeAppInit()
   }
 
   aboutToDisappear(): void {
-    EmitterUtil.unSubscribe(AppEvents.APP_INIT)
+    this.unsubscribeAppInit()
   }
 
   @Builder
