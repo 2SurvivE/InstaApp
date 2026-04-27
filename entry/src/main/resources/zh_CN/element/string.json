@@ -2,19 +2,19 @@
   "string": [
     {
       "name": "EntryPage_WaterLabel",
-      "value": "Self Learning"
+      "value": "练手小项目"
     },
     {
       "name": "module_desc",
-      "value": "EntryModuleDesc"
+      "value": "启动模块的描述"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "EntryAbilityDesc"
+      "value": "启动Ability描述"
     },
     {
       "name": "EntryAbility_label",
-      "value": "EntryAbilityLabel"
+      "value": "启动Ability标签"
     },
     {
       "name": "app_name",

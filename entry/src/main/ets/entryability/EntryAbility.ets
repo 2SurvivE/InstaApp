@@ -1,57 +1,79 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { DEBUG, INFO, ERROR , FATAL, WARN} from '../common/utils/logutils/index'
-import {setup, init} from "@kuiklybase/knoi"
-import {init_all_service_provider} from '../common/utils/bootstrap/bootstrap'
+import { DEBUG, INFO, ERROR, FATAL, WARN } from '../common/utils/logutils/index'
+import { setup, init } from "@kuiklybase/knoi"
+import { init_all_service_provider } from '../common/utils/bootstrap/bootstrap'
 
 const DOMAIN = 0x0000;
 const tag = 'EntryAbility'
+
 export default class EntryAbility extends UIAbility {
+  async setFullScreenLayout(windowStage: window.WindowStage) {
+    try {
+      DEBUG(tag, "Start to set full screen mode")
+      const mainWindow: window.Window = await windowStage.getMainWindow()
+
+      await mainWindow.setWindowLayoutFullScreen(true)
+
+      await mainWindow.setWindowSystemBarProperties({
+        statusBarColor: '#00000000',
+        navigationBarColor: '#00000000',
+        statusBarContentColor: '#ff000000',
+        navigationBarContentColor: '#ff000000'
+      })
+
+    } catch (e) {
+      ERROR(tag, `Can't set full screen mode, cause ${JSON.stringify(e)}`)
+    }
+  }
+
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    DEBUG(tag,'Start to init JNOI');
+    DEBUG(tag, 'Start to init JNOI');
     setup('libkn.so', true)
     init();
-    DEBUG(tag,'Start to register service provider')
+    DEBUG(tag, 'Start to register service provider')
     init_all_service_provider();
 
     try {
       this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     } catch (err) {
-      hilog.error(DOMAIN, 'testTag', 'Failed to set colorMode. Cause: %{public}s', JSON.stringify(err));
+      ERROR(tag, `Failed to set colorMode. Cause: ${JSON.stringify(err)}`);
     }
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
+    DEBUG(tag, 'Ability onCreate');
   }
 
   onDestroy(): void {
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
+    DEBUG(tag, 'Ability onDestroy');
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
     // Main window is created, set main page for this ability
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
+    DEBUG(tag, 'Ability onWindowStageCreate');
 
-    windowStage.loadContent('pages/Index', (err) => {
+    this.setFullScreenLayout(windowStage)
+
+    windowStage.loadContent('pages/Index', (err: BusinessError): void => {
       if (err.code) {
-        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
-        return;
+        ERROR(tag, `Failed to load the content. Code: ${err.code}, message: ${err.message}`)
+        return
       }
-      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
-    });
+      INFO(tag, 'Succeeded in loading the content.')
+    })
   }
 
   onWindowStageDestroy(): void {
     // Main window is destroyed, release UI related resources
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');
+    DEBUG(tag, 'Ability onWindowStageDestroy');
   }
 
   onForeground(): void {
     // Ability has brought to foreground
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');
+    DEBUG(tag, 'Ability onForeground');
   }
 
   onBackground(): void {
     // Ability has back to background
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
+    DEBUG(tag, 'Ability onBackground');
   }
 }

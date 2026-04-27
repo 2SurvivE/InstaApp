@@ -8,17 +8,31 @@ const tag = 'EntryPage'
 @Entry
 @Component
 struct Index {
-  @State res: string = 'compute a + b'
-
   build() {
-    Column() {
-      Text(this.res)
-        .onClick(() => {
-          DEBUG(tag,"Text is clicked")
-          this.res = provider.getCalcService().add(10,30).toString();
-        })
+    Stack() {
+      Image($r('app.media.index_page_background'))
+        .height('100%')
+        .width('100%')
+
+      Column(){
+        Text($r('app.string.EntryPage_WaterLabel'))
+          .fontColor(Color.White)
+          .fontSize(20)
+          .padding({bottom:40})
+
+      }
+        .width('100%')
+        .height('100%')
+        .justifyContent(FlexAlign.End)
+        .alignItems(HorizontalAlign.Center)
+        .zIndex(2)
+
     }
-    .height('100%')
-    .width('100%')
+      .height('100%')
+      .width('100%')
+      .expandSafeArea(
+        [SafeAreaType.SYSTEM, SafeAreaType.CUTOUT],
+        [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM, SafeAreaEdge.START, SafeAreaEdge.END]
+      )
   }
 }

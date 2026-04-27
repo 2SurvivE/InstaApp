@@ -1,0 +1,82 @@
+{
+  "locales": [
+    "base",
+    "zh_CN",
+    "en_US"
+  ],
+  "strings": {
+    "EntryPage_WaterLabel": {
+      "scope": [
+        "entry"
+      ],
+      "base": "Self Learning",
+      "zh_CN": "练手小项目",
+      "en_US": "Self Learning"
+    },
+    "module_desc": {
+      "scope": [
+        "entry"
+      ],
+      "base": "EntryModuleDesc",
+      "zh_CN": "启动模块的描述",
+      "en_US": "EntryModuleDesc"
+    },
+    "EntryAbility_desc": {
+      "scope": [
+        "entry"
+      ],
+      "base": "EntryAbilityDesc",
+      "zh_CN": "启动Ability描述",
+      "en_US": "EntryAbilityDesc"
+    },
+    "EntryAbility_label": {
+      "scope": [
+        "entry"
+      ],
+      "base": "EntryAbilityLabel",
+      "zh_CN": "启动Ability标签",
+      "en_US": "EntryAbilityLabel"
+    },
+    "app_name": {
+      "scope": [
+        "appscope",
+        "entry"
+      ],
+      "base": "InstaApp",
+      "zh_CN": "InstaApp",
+      "en_US": "InstaApp"
+    },
+    "home_title": {
+      "scope": [
+        "entry"
+      ],
+      "base": "首页",
+      "zh_CN": "首页",
+      "en_US": "Home"
+    },
+    "login": {
+      "scope": [
+        "entry"
+      ],
+      "base": "登录",
+      "zh_CN": "登录",
+      "en_US": "Log In"
+    },
+    "logout": {
+      "scope": [
+        "entry"
+      ],
+      "base": "退出登录",
+      "zh_CN": "退出登录",
+      "en_US": "Log Out"
+    },
+    "switch_language": {
+      "scope": [
+        "entry"
+      ],
+      "base": "切换语言",
+      "zh_CN": "切换语言",
+      "en_US": "Switch Language"
+    }
+  }
+}

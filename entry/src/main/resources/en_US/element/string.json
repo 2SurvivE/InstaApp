@@ -22,19 +22,19 @@
     },
     {
       "name": "home_title",
-      "value": "首页"
+      "value": "Home"
     },
     {
       "name": "login",
-      "value": "登录"
+      "value": "Log In"
     },
     {
       "name": "logout",
-      "value": "退出登录"
+      "value": "Log Out"
     },
     {
       "name": "switch_language",
-      "value": "切换语言"
+      "value": "Switch Language"
     }
   ]
 }
