@@ -2,7 +2,7 @@ import { EmitterUtil } from '@pura/harmony-utils'
 import { AppEvents } from '../../common/event/AppEvents'
 import { AppInitState, AppInitStatus } from '../../common/state/AppInitState'
 import { DEBUG, ERROR } from '../../common/utils/logutils/index'
-import { HomePage } from '../Home/HomePage'
+import { HomePage } from '../home/HomePage'
 
 const tag: string = 'EntryPage'
 
