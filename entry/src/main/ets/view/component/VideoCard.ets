@@ -1,30 +1,47 @@
+import { DEBUG, ERROR, INFO, FATAL, WARN } from "../../common/utils/logutils";
+import { Router } from "@ohos.arkui.UIContext";
+
+const tag = 'VideoCard'
+
 @Preview
 @Component
 export default struct VideoCard {
   private defaultHeight: number = 223
   private defaultWidth: number = 339
-
   @Prop coverPageUrl: string = ''
   @Prop authorAvatarUrl: string = ''
   @Prop authorNickname: string = '未知作者'
-
-  // 改动 1：新增后端返回的真实封面宽度
-  // 不能只用 defaultWidth，否则所有 Card 都会按 339:223 显示
   @Prop coverWidth: number = 339
-
-  // 改动 2：新增后端返回的真实封面高度
-  // Card 高度要靠 coverWidth / coverHeight 计算出来
   @Prop coverHeight: number = 223
+  @Prop topMargin: number = 0
+  @Prop videoUrl: string = ''
 
-  // 改动 3：新增方法，统一计算当前 Card 的真实宽高比
-  // 正常情况下使用后端返回的真实尺寸
-  // 后端数据异常时，才使用 empty_video.png 的默认尺寸 339x223
   private getCoverRatio(): number {
     if (this.coverWidth <= 0 || this.coverHeight <= 0) {
       return this.defaultWidth / this.defaultHeight
     }
 
     return this.coverWidth / this.coverHeight
+  }
+
+  private jumpToVideoPlayPage(): void {
+    DEBUG(tag, `The url ${this.videoUrl} is clicked`)
+    // 修改点 3：增加空 URL 判断，避免跳转到播放器页面后没有视频源
+    if (this.videoUrl.length <= 0) {
+      ERROR(tag, 'videoUrl is empty')
+      return
+    }
+    // 修改点 4：使用当前组件的 UIContext 获取 Router，并跳转到播放器页面
+    this.getUIContext().getRouter().pushUrl({
+      url: 'pages/home/VideoPlayerPage',
+      params: {
+        videoUrl: this.videoUrl,
+        coverWidth: this.coverWidth,
+        coverHeight: this.coverHeight
+      }
+    }).catch(() => {
+      ERROR(tag, `Can't Router to url`)
+    })
   }
 
   build() {
@@ -67,15 +84,21 @@ export default struct VideoCard {
         }
         .height(60)
         .width('100%')
-        .backgroundColor('rgba(255, 255, 255, 0.80)')
+        .backgroundColor('rgba(255, 255, 255, 0.6)')
         .padding({ left: 15, right: 15 })
         .alignItems(VerticalAlign.Center)
       }
-        .width('100%')
-        .aspectRatio(this.getCoverRatio())
+      .width('100%')
+      .aspectRatio(this.getCoverRatio())
     }
     .width('100%')
     .borderRadius(12)
     .clip(true)
+    .margin({ top: this.topMargin })
+    .onClick(
+      () => {
+        this.jumpToVideoPlayPage()
+      }
+    )
   }
 }

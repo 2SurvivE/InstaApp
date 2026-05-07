@@ -8,8 +8,8 @@ import { DEBUG, ERROR, INFO, FATAL, WARN } from "../common/utils/logutils/index"
 const tag = 'requestFeedList'
 
 export async function requestFeedList(): Promise<VideoFeedItem[]> {
-  let session: rcp.Session|undefined = undefined;
 
+  let session: rcp.Session|undefined = undefined;
   try{
     session = rcp.createSession()
     if(session === undefined){
@@ -37,4 +37,5 @@ export async function requestFeedList(): Promise<VideoFeedItem[]> {
     if(session !== undefined)
       session.close()
   }
+
 }

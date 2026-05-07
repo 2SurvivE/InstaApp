@@ -116,7 +116,7 @@ export default class EntryAbility extends UIAbility {
       this.initServiceProvider()
       this.initColorMode()
       DEBUG(tag, 'App init success');
-      await this.delay(3000)
+      await this.delay(1000)
       AppInitState.success()
       EmitterUtil.post<boolean>(AppEvents.APP_INIT, true)
     }catch (e) {

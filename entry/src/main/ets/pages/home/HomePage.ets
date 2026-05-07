@@ -56,7 +56,6 @@ struct HeaderTabs {
 }
 
 @Preview
-@Entry
 @Component
 export struct HomePage {
   @State private selectedIndex: number = 1
@@ -64,17 +63,19 @@ export struct HomePage {
   build() {
     NavDestination() {
       Column() {
+
         HeaderTabs({ selectedIndex: this.selectedIndex })
           .width('100%')
-          .height(40)
+
         Divider()
+          .color(Color.Black)
+
         this.contentArea()
 
       }
       .height('100%')
       .width('100%')
       .padding({ top: 24 })
-
     }
   }
 
@@ -89,7 +90,6 @@ export struct HomePage {
         TutorialPage()
       }
     }
-    .layoutWeight(1)
-
+      .layoutWeight(1)
   }
 }
