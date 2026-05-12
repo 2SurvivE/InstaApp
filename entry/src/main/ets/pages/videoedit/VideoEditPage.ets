@@ -1,7 +1,9 @@
 import { AppUtil } from '@pura/harmony-utils'
 import { DEBUG } from '../../common/utils/logutils/Logger'
 import { VideoPreviewArea } from '../../feature/videoedit/component/preview/VideoPreviewArea'
+import { TimelinePanel } from '../../feature/videoedit/component/timeline/TimeLinePanel'
 import {VideoEditTopBar} from '../../feature/videoedit/component/topbar/VideoEditTopBar'
+import { VideoControlBar } from '../../feature/videoedit/component/videocontrol/VideoControlBar'
 import { VideoResolutionRatioEnum } from '../../feature/videoedit/constants/VideoResolutionRatioEnum'
 
 const tag = 'VideoEditPage'
@@ -12,6 +14,8 @@ struct VideoEditPage{
   @Local videoRatio : VideoResolutionRatioEnum = VideoResolutionRatioEnum.RATIO_16_9
   @Local ratioExpanded: boolean = false
   @Local isPlaying: boolean = false
+  @Local currentTime: number = 0 // 修改点：当前播放时间，单位 ms
+  @Local durationTime: number = 0
 
   private readonly xComponentId: string = 'xcomponent_video_id'
   private readonly xComponentController: XComponentController = new XComponentController()
@@ -45,68 +49,43 @@ struct VideoEditPage{
             this.aspectRatioPanel()
           }
 
-          VideoPreviewArea(
-            {
+          VideoPreviewArea({
               selectedRatio:this.videoRatio,
               xComponentId: this.xComponentId,
               xComponentController: this.xComponentController
-            }
-          )
+            })
             .height('100%')
             .width('100%')
         }
         .width('100%')
-        .height('60%')
+        .height(400)
         .backgroundColor(Color.Red)
 
-        Stack({ alignContent: Alignment.Center }){
-          Row(){
-            Button(){
-              SymbolGlyph($r('sys.symbol.arrow_left'))
-                .fontColor([Color.White])
+        VideoControlBar({
+            isPlaying:this.isPlaying,
+
+            onUndoClick: () => {
+              this.undoButton()
+            },
+
+            onRedoClick: () => {
+              this.redoButton()
+            },
+
+            onPlayClick: () => {
+              this.videoControlButton()
+            },
+
+            onFullscreenClick: () => {
+              this.fullScreenButton()
             }
-            .backgroundColor(Color.Transparent)
-            .onClick(()=>{this.undoButton()})
-
-            Button(){
-              SymbolGlyph($r('sys.symbol.arrow_right'))
-                .fontColor([Color.White])
-            }
-            .backgroundColor(Color.Transparent)
-            .margin({left:8})
-            .onClick(()=>{this.redoButton()})
-
-            Blank()
-
-            Button(){
-              SymbolGlyph($r('sys.symbol.fullscreen'))
-                .fontColor([Color.White])
-            }
-            .backgroundColor(Color.Transparent)
-            .margin({left:8})
-            .onClick(()=>{this.fullScreenButton()})
-
-          }
+          })
+          .height(48)
           .width('100%')
-          .height('100%')
-          .backgroundColor(Color.Black)
-          .padding({left:16,right:16})
 
-          Button(){
-            if(!this.isPlaying) {
-              SymbolGlyph($r('sys.symbol.play'))
-                .fontColor([Color.White])
-            } else {
-              SymbolGlyph($r('sys.symbol.pause'))
-                .fontColor([Color.White])
-            }
-          }
-          .backgroundColor(Color.Transparent)
-          .onClick(()=>{this.videoControlButton()})
+        TimelinePanel({currentTime:this.currentTime,durationTime:this.durationTime})
           .height('100%')
-        }
-        .width('100%')
-        .height('5%')
+          .width('100%')
 
       }
         .backgroundColor(Color.Black)
@@ -158,7 +137,6 @@ struct VideoEditPage{
         DEBUG(tag, `Select ratio: ${ratio}`)
       })
   }
-
 
   private closeButton() : void{
     DEBUG(tag,"CloseButton is clicked")
