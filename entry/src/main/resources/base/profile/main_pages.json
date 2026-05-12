@@ -1,6 +1,6 @@
 {
   "src": [
-    "pages/entry/Index",
-    "pages/home/VideoPlayerPage"
+    "pages/home/VideoPlayerPage",
+    "pages/home/HomePage"
   ]
 }

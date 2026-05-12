@@ -1,0 +1,14 @@
+{
+  "routerMap": [
+    {
+      "name": "VideoEditPage",
+      "pageSourceFile": "src/main/ets/pages/videoedit/VideoEditPage.ets",
+      "buildFunction": "PageBuilder"
+    },
+    {
+      "name": "HomePage",
+      "pageSourceFile": "src/main/ets/pages/home/HomePage.ets",
+      "buildFunction": "PageBuilder"
+    }
+  ]
+}

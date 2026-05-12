@@ -1,11 +1,8 @@
-import { rcp } from '@kit.RemoteCommunicationKit'
-import { BusinessError } from '@kit.BasicServicesKit'
 import { DEBUG, ERROR, INFO, FATAL, WARN } from "../../common/utils/logutils";
 import VideoCard from '../../view/component/VideoCard'
 import { requestFeedList } from '../../api/FeedApi'
 import { VideoFeedItem } from '../../model/VideoFeedItem';
 import { DialogUtil, PreferencesUtil } from '@pura/harmony-utils';
-import { preferences } from '@kit.ArkData';
 
 const tag = 'RecommendPage'
 

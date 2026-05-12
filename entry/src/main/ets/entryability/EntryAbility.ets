@@ -24,7 +24,7 @@ export default class EntryAbility extends UIAbility {
   onWindowStageCreate(windowStage: window.WindowStage): void {
     DEBUG(tag, 'Ability onWindowStageCreate');
     this.initFullScreenLayout(windowStage)
-    windowStage.loadContent('pages/entry/Index', (err: BusinessError): void => {
+    windowStage.loadContent('pages/home/HomePage', (err: BusinessError): void => {
       if (err.code) {
         ERROR(tag, `Failed to load the content. Code: ${err.code}, message: ${err.message}`)
         return
@@ -54,15 +54,16 @@ export default class EntryAbility extends UIAbility {
       DEBUG(tag, "Start to set full screen mode")
       const mainWindow: window.Window = await windowStage.getMainWindow()
 
-      await mainWindow.setWindowLayoutFullScreen(true)
 
+      DEBUG(tag,`Init full screen layout`)
+      await mainWindow.setWindowLayoutFullScreen(true)
       await mainWindow.setWindowSystemBarProperties({
         statusBarColor: '#00000000',
         navigationBarColor: '#00000000',
-        statusBarContentColor: '#ff000000',
-        navigationBarContentColor: '#ff000000'
+        statusBarContentColor: '#FFFFFF',
+        navigationBarContentColor: '#FFFFFF'
       })
-
+      DEBUG(tag,`Status height is ${AppUtil.getStatusBarHeight()} px`)
     } catch (e) {
       ERROR(tag, `Can't set full screen mode, cause ${JSON.stringify(e)}`)
     }
