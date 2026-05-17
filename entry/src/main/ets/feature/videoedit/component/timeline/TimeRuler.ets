@@ -1,20 +1,15 @@
-import { Ms2MmSs } from "../../util/TimeUtils"
+
 
 @Preview
 @ComponentV2
-export struct TimeRuler{
-  @Require @Param currentTime:number = 0
-  @Require @Param durationTime:number = 0
+export struct TimeRuler {
+  @Require @Param durationMs: number        // 总时长
+  @Require @Param fps: number               // 帧率
+  @Require @Param halfViewport: number      // 半屏宽度
+  @Require @Param secondWidth: number       // 秒宽度
 
+  build() {
 
-  build(){
-    Row(){
-      Text(`${Ms2MmSs(this.currentTime)}/${Ms2MmSs(this.durationTime)}`)
-        .fontColor(Color.White)
-    }
-      .width('100%')
-      .height('100%')
-      .justifyContent(FlexAlign.Start)
   }
 
 }

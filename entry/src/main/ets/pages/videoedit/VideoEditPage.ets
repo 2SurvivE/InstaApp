@@ -14,8 +14,8 @@ struct VideoEditPage{
   @Local videoRatio : VideoResolutionRatioEnum = VideoResolutionRatioEnum.RATIO_16_9
   @Local ratioExpanded: boolean = false
   @Local isPlaying: boolean = false
-  @Local currentTime: number = 0 // 修改点：当前播放时间，单位 ms
-  @Local durationTime: number = 0
+  @Local currentTime: number = 0
+  @Local durationTime: number = 30000
 
   private readonly xComponentId: string = 'xcomponent_video_id'
   private readonly xComponentController: XComponentController = new XComponentController()
@@ -57,9 +57,9 @@ struct VideoEditPage{
             .height('100%')
             .width('100%')
         }
-        .width('100%')
-        .height(400)
-        .backgroundColor(Color.Red)
+          .width('100%')
+          .height(400)
+          .backgroundColor(Color.Red)
 
         VideoControlBar({
             isPlaying:this.isPlaying,
@@ -83,9 +83,17 @@ struct VideoEditPage{
           .height(48)
           .width('100%')
 
-        TimelinePanel({currentTime:this.currentTime,durationTime:this.durationTime})
-          .height('100%')
+        TimelinePanel(
+          {
+            currentTime:this.currentTime,
+            durationTime:this.durationTime,
+            onTimeChange: (timeMs:number)=>{
+              this.currentTime = timeMs
+            }
+          }
+        )
           .width('100%')
+          .layoutWeight(1)
 
       }
         .backgroundColor(Color.Black)
