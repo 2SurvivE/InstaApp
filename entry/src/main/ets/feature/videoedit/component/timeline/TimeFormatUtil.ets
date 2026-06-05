@@ -1,4 +1,4 @@
-import { VideoFrameRateEnum, VideoFrameRateUtil } from '../../videoedit/constants/VideoFrameRateEnum'
+import { VideoFrameRateEnum, VideoFrameRateUtil } from '../../constants/VideoFrameRateEnum'
 
 /**
  * TimeFormatUtil.ets

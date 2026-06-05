@@ -4,6 +4,7 @@ import { VideoPreviewArea } from '../../feature/videoedit/component/preview/Vide
 import { TimelinePanel } from '../../feature/videoedit/component/timeline/TimeLinePanel'
 import {VideoEditTopBar} from '../../feature/videoedit/component/topbar/VideoEditTopBar'
 import { VideoControlBar } from '../../feature/videoedit/component/videocontrol/VideoControlBar'
+import { VideoFrameRateEnum, VideoFrameRateUtil } from '../../feature/videoedit/constants/VideoFrameRateEnum'
 import { VideoResolutionRatioEnum } from '../../feature/videoedit/constants/VideoResolutionRatioEnum'
 
 const tag = 'VideoEditPage'
@@ -15,7 +16,8 @@ struct VideoEditPage{
   @Local ratioExpanded: boolean = false
   @Local isPlaying: boolean = false
   @Local currentTime: number = 0
-  @Local durationTime: number = 30000
+  @Local durationTime: number = 3000000
+  @Local frameRate: VideoFrameRateEnum = VideoFrameRateUtil.DEFAULT_FRAME_RATE
 
   private readonly xComponentId: string = 'xcomponent_video_id'
   private readonly xComponentController: XComponentController = new XComponentController()
@@ -26,19 +28,15 @@ struct VideoEditPage{
       Column(){
         VideoEditTopBar({
           selectedRatio: this.videoRatio,
-
           onCloseClick: () => {
             this.closeButton()
           },
-
           onSettingClick: () => {
             this.settingButton()
           },
-
           onRatioClick: () => {
             this.ratioButton()
           },
-
           onExportClick: () => {
             this.exportButton()
           }
@@ -89,7 +87,8 @@ struct VideoEditPage{
             durationTime:this.durationTime,
             onTimeChange: (timeMs:number)=>{
               this.currentTime = timeMs
-            }
+            },
+            frameRate:this.frameRate
           }
         )
           .width('100%')
