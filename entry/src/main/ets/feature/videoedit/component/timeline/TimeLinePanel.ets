@@ -1,12 +1,8 @@
-import { DisplayUtil } from "@pura/harmony-utils"
-import { DEBUG } from "../../../../common/utils/logutils/Logger"
 import { VideoFrameRateEnum } from "../../constants/VideoFrameRateEnum"
 import { TimeFormatUtil } from "./TimeFormatUtil"
 import { TimeRuler } from "./TimeRuler"
 import { TimeRulerCoordinateUtil } from "./TimeRulerCoordinateUtil"
 import { TimeRulerScaleType, TimeRulerScaleUtil } from "./TimeRulerScale"
-
-const tag = "TimelinePanel"
 
 @Preview
 @ComponentV2
@@ -19,7 +15,6 @@ export struct TimelinePanel {
   @Local private pxPerFrame: number = 2
   @Local private panelWidth: number = 0
   @Local private scrollOffsetX: number = 0
-  @Local private isScrollingByUser: boolean = false
 
   private scroller: Scroller = new Scroller()
 
@@ -36,10 +31,17 @@ export struct TimelinePanel {
       .onScroll((xOffset: number, yOffset: number) => {
         this.handleScroll(xOffset, yOffset)
       })
-      Text(`${TimeFormatUtil.formatTimeMsText(this.currentTime)}/${TimeFormatUtil.formatTimeMsText(this.durationTime)}`)
+      // 修改：恢复使用 TimeFormatUtil 的统一时间格式，避免面板显示裸毫秒值。
+      // Text(`${TimeFormatUtil.formatTimeMsText(this.currentTime)}/${TimeFormatUtil.formatTimeMsText(this.durationTime)}`)
+      //   .fontSize(10)
+      //   .fontColor(Color.White)
+      //   .backgroundColor(PANEL_BACKGROUND_COLOR)
+
+      Text(`${this.currentTime}/${this.durationTime}`)
         .fontSize(10)
         .fontColor(Color.White)
         .backgroundColor(PANEL_BACKGROUND_COLOR)
+
       this.playHead()
     }
     .width('100%')
@@ -64,37 +66,20 @@ export struct TimelinePanel {
   }
 
   private getRightPadding(): number {
-
     return TimeRulerCoordinateUtil.getRightPadding(
-
       this.getSafePanelWidth(),
-
       this.getPlayHeadX()
-
     )
-
-  }
-
-  private getTotalFrame(): number {
-    return TimeRulerCoordinateUtil.getTotalFrame(this.durationTime, this.frameRate)
   }
 
   private getContentWidth(): number {
-
     return TimeRulerCoordinateUtil.getContentWidthByDurationTime(
-
       this.durationTime,
-
       this.pxPerFrame,
-
       this.getLeftPadding(),
-
       this.getRightPadding(),
-
       this.frameRate
-
     )
-
   }
 
   private handleAreaChange(_oldArea: Area, newArea: Area): void {
@@ -105,75 +90,31 @@ export struct TimelinePanel {
   }
 
   private handleScroll(_xOffset: number, _yOffset: number): void {
-
     const currentOffsetX = this.scroller.currentOffset().xOffset
 
     this.scrollOffsetX = Math.max(0, currentOffsetX)
 
     const timeMs = TimeRulerCoordinateUtil.scrollOffsetXToTimeMs(
-
       this.scrollOffsetX,
-
       this.durationTime,
-
       this.pxPerFrame,
-
       this.frameRate
-
     )
 
     this.onTimeChange(timeMs)
-
-  }
-
-  private handleRulerTimeChange(timeMs: number): void {
-
-    this.onTimeChange(timeMs)
-
-  }
-
-  private scrollToTime(timeMs: number, animation: boolean = false): void {
-
-    const offsetX = TimeRulerCoordinateUtil.timeMsToScrollOffsetX(
-
-      timeMs,
-
-      this.durationTime,
-
-      this.pxPerFrame,
-
-      this.frameRate
-
-    )
-
-    this.scroller.scrollTo({
-
-      xOffset: offsetX,
-
-      yOffset: 0,
-
-      animation: animation
-
-    })
-
-    this.scrollOffsetX = offsetX
-
   }
 
   @Builder
   private scrollContent() {
     Column() {
+      // 新增：TimelinePanel 负责 Scroll，TimeRuler 只负责渲染刻度。
       TimeRuler({
-        currentTime: this.currentTime,
         durationTime: this.durationTime,
         frameRate: this.frameRate,
-        scaleType: this.scaleType,
         pxPerFrame: this.pxPerFrame,
+        scaleType: this.scaleType,
         leftPadding: this.getLeftPadding(),
-        rightPadding: this.getRightPadding(),
-        onTimeChange: (timeMs: number) => {
-          this.handleRulerTimeChange(timeMs)
-        }
+        rightPadding: this.getRightPadding()
       })
         .height(TIME_RULER_HEIGHT)
         .width(this.getContentWidth())

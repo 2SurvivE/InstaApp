@@ -16,7 +16,7 @@ struct VideoEditPage{
   @Local ratioExpanded: boolean = false
   @Local isPlaying: boolean = false
   @Local currentTime: number = 0
-  @Local durationTime: number = 3000000
+  @Local durationTime: number = 3500
   @Local frameRate: VideoFrameRateEnum = VideoFrameRateUtil.DEFAULT_FRAME_RATE
 
   private readonly xComponentId: string = 'xcomponent_video_id'
